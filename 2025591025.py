@@ -14,65 +14,6 @@ COLUMNS = ["닉네임", "총점", "클릭 수", "잡은 두더지 수", "명중�
 MAX_RANK = 10
 total_score = 0
 
-# 두더지 클래스
-class Mole:
-    score = 0
-    def __init__ (self):
-        self.score = 1
-    def Mole_click(self):
-        pass
-
-class Classic_Mole(Mole):       #일반 두더지
-    def __init__ (self):
-        self.score = 1
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-class Boom_Mole(Mole):          #폭탄 두더지
-    def __init__ (self):
-        self.score = -1
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-class Keyboard_Mole(Mole):      #특정키 두더지
-    def __init__ (self):
-        self.score = 1
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-class Doubleclick_Mole(Mole):   #더블클릭 두더지
-    def __init__ (self):
-        self.score = 1
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-class Rightclick_Mole(Mole):    #우클릭 두더지
-    def __init__ (self):
-        self.score = 1
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-class Bonus_Mole(Mole):         #보너스 두더지
-    def __init__ (self):
-        self.score = 3
-    def Mole_click(self):
-        global total_score
-        totla_score += self.score
-
-# 일반, 누르면 안됨, 특정 키와 함꼐 누름, 여러번 누름, 좌클릭, 보너스 두더지
-# 잡혔을 때 반응(각 두더지 고유효과), 나와있는 시간,
-
-# 최대 동시 존재 갯수?
-
-
-# 저장할 점수에 무슨 정보가 들었는가?
-# 닉네임, 총점, 최대 콤보, 클릭 수, 잡은 두더지 수, 명중률, 플레이 시간
-# csv
 
 
 class ScoreBoard(QWidget):

@@ -8,10 +8,7 @@ from PyQt5.QtGui import QFont, QPixmap, QIcon
 from PyQt5.QtCore import Qt, QTimer, QEvent, QPoint
 
 
-GAMETIME = 60
-fps = 60
-holeList = list()
-xLen, yLen = 0, 0
+GAMETIME = 5
 path = "Scoreboard.csv"
 total_score = 0
 click_count = 0
@@ -294,7 +291,7 @@ def save_game_data(name, score, clickCnt, moleCnt, playTime):
     if not os.path.exists(path):
         with open(path, "w", newline='', encoding="utf-8-sig") as f:
             writer = csv.writer(f)
-            writer.writerow(["닉네임", "총점", "최대 콤보", "클릭 수", "잡은 두더지 수", "명중률", "플레이 시간"])
+            writer.writerow(["닉네임", "총점", "클릭 수", "잡은 두더지 수", "명중률", "플레이 시간"])
 
     with open(path, "r", encoding="utf-8-sig") as read:
         reader = csv.reader(read)
@@ -303,8 +300,8 @@ def save_game_data(name, score, clickCnt, moleCnt, playTime):
         for row in reader:
             csvList.append(row)
 
-    accuracy = (moleCnt / clickCnt) if clickCnt > 0 else 0.0
-    csvList.append([name, score, clickCnt, moleCnt, f"{accuracy:.2f}", playTime])
+    accuracy = (moleCnt / clickCnt * 100) if clickCnt > 0 else 0.0
+    csvList.append([name, score, clickCnt, moleCnt, f"{accuracy:.2f}%", playTime])
 
     sorted_data = sorted(csvList[1:], key=lambda x: int(x[1]), reverse=True)
 
@@ -335,15 +332,6 @@ def loadData():
         return []
 
 
-def scoreBoard(): # 이 함수는 콘솔 출력용이므로 GUI에서는 사용되지 않습니다.
-    data = loadData()
-    if data:
-        print("\n--- 점수판 ---")
-        for row in data:
-            print(row)
-        print("--------------")
-    else:
-        print("표시할 점수 데이터가 없습니다.")
 
 # 새로 추가할 랭킹 GUI 클래스
 class ScoreBoard_GUI(QDialog):
@@ -543,6 +531,7 @@ class MoleClicker_Ingame_GUI(QWidget):
         self.mole_spawn_timer = QTimer(self)
         self.game_duration = GAMETIME
         self.current_game_time = 0
+        self.ttt = 0
 
         global diff
         if diff == 0:
@@ -669,9 +658,8 @@ class MoleClicker_Ingame_GUI(QWidget):
         QTimer.singleShot(500, effect_label.deleteLater)
 
     def update_game_time(self):
-        global GAMETIME # Renamed from game_time to avoid confusion with class member
         self.current_game_time -= 1
-        GAMETIME += 1
+        self.ttt += 1
         self.time_label.setText(f"시간: {self.current_game_time}초")
         if self.current_game_time <= 0:
             self.end_game_round()
@@ -693,7 +681,7 @@ class MoleClicker_Ingame_GUI(QWidget):
             button.current_mole = None
             button.setIcon(QIcon(button.empty_hole_pixmap))
 
-        final_play_time = GAMETIME # Changed to global GAMETIME
+        final_play_time = self.ttt # Changed to global GAMETIME
 
         QMessageBox.information(self, "게임 종료!",
                                 f"게임 종료!\n최종 점수: {total_score}\n총 클릭 횟수: {click_count}\n잡은 두더지 수: {mole_hit_count}\n플레이 시간: {final_play_time}초")
@@ -702,8 +690,10 @@ class MoleClicker_Ingame_GUI(QWidget):
         if ok and player_name:
             save_game_data(player_name, total_score, click_count, mole_hit_count, final_play_time)
 
-
-        self.close()
+        self.hide()
+        self.game_screen = MoleClicker_Start_GUI()
+        self.game_screen.show()
+    
 
 
     def spawn_mole(self):
@@ -760,4 +750,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_window = MoleClicker_Start_GUI()
     main_window.show()
+    
     sys.exit(app.exec_())
