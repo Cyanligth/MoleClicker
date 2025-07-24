@@ -27,6 +27,7 @@ csvList = list[]    # 읽고쓰기용 리스트
 saveData = ["", 0, 0, 0, 0, 0.0, 0]
 
 def saveData(name, score, maxCombo, clickCnt, moleCnt, playTime):
+    csvList.clear()
     with open(f"./{path}", "r", encoding="utf-8-sig") as read:
         reader=csv.reader(read) # 읽기
         head=next(reader)   # 헤더 빼오기
@@ -42,6 +43,22 @@ def saveData(name, score, maxCombo, clickCnt, moleCnt, playTime):
             writer.writerow(head)  # 헤더 써넣기
             for row in data:    # 반복하며 필요없는 행을 제외한 데이터 써넣기
                 writer.writerow(row)
+
+def loadData():
+    csvList.clear()
+    with open(f"./{path}", "r", encoding="utf-8-sig") as read:
+        reader=csv.reader(read) # 읽기
+        head=next(reader)   # 헤더 빼오기
+        csvList.append(head)# 빼온 헤더 리스트에 추가
+        for row in reader:  # 남은 열들 반복하며 리스트에 추가
+            csvList.append(row)
+    return csvList # 반환하고, 스코어보드로 출력시키
+
+def scoreBoard():
+    # 1. 로드
+    # 2. 화면 출력
+    # 3. 꺼지기 전에 세이브  
+        
 
 
 # 메인은 이 아래에
