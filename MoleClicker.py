@@ -10,7 +10,6 @@ holeList = list()   # 구멍 배열
 xLen, yLen = 0, 0   # 구멍 배열과 두더지 구멍 xy 길이 설정
 combo = 0           # 콤보
 path = "Scoreboard.csv" # 저장 경로
-csvList = list[]    # 읽고쓰기용 리스트
 
 
 # 두더지 클래스
@@ -27,7 +26,7 @@ csvList = list[]    # 읽고쓰기용 리스트
 saveData = ["", 0, 0, 0, 0, 0.0, 0]
 
 def saveData(name, score, maxCombo, clickCnt, moleCnt, playTime):
-    csvList.clear()
+    csvList = []
     with open(f"./{path}", "r", encoding="utf-8-sig") as read:
         reader=csv.reader(read) # 읽기
         head=next(reader)   # 헤더 빼오기
@@ -45,7 +44,7 @@ def saveData(name, score, maxCombo, clickCnt, moleCnt, playTime):
                 writer.writerow(row)
 
 def loadData():
-    csvList.clear()
+    csvList = []
     with open(f"./{path}", "r", encoding="utf-8-sig") as read:
         reader=csv.reader(read) # 읽기
         head=next(reader)   # 헤더 빼오기
