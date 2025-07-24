@@ -12,7 +12,6 @@ holeList = list()   # 구멍 배열
 xLen, yLen = 0, 0   # 구멍 배열과 두더지 구멍 xy 길이 설정
 combo = 0           # 콤보
 path = "Scoreboard.csv" # 저장 경로
-csvList = []  # 읽고쓰기용 리스트
 total_score = 0
 
 # 두더지 클래스
